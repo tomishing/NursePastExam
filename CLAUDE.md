@@ -2,7 +2,7 @@
 
 ## Purpose
 
-An Anki-like web app for practising past questions from 看護師国家試験 and 保健師国家試験. The front of a card shows the question, choices and any figure or table. The back shows the answer and an explanation. The user rates their recall, and a spaced-repetition scheduler decides when the card returns.
+An Anki-like web app for practising past questions from the Japanese national nurse exam (看護師国家試験) and public health nurse exam (保健師国家試験). The questions cover only epidemiology and public health (疫学, 保健統計, 保健医療福祉行政論, 公衆衛生), not the whole exams. The front of a card shows the question, choices and any figure or table. The back shows the answer and an explanation. The user rates their recall, and a spaced-repetition scheduler decides when the card returns.
 
 Version 1 is for one user (the owner), with no accounts and no server-side data. Progress stays on the device. Later it will open to students and teachers and be installable on iOS and Android as a PWA, not through the App Store or Google Play, so version 1 must not block that. See "Future stages" in `specification.md`.
 

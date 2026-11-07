@@ -1,6 +1,13 @@
 # NursePastExam
 
-An Anki-like web app (PWA) for practising past questions from 看護師国家試験 and 保健師国家試験, with spaced repetition. See `specification.md` for features and `development_plan.md` for the build phases.
+An Anki-like web app (PWA) for practising past questions from the Japanese national nurse exam (看護師国家試験) and the national public health nurse exam (保健師国家試験), with spaced repetition.
+
+The questions are limited to **epidemiology and public health**. Other subjects are not included.
+
+| Exam | Rounds | Categories |
+|---|---|---|
+| 看護師国家試験 (nurse) | 第99回〜第115回 (2010–2026) | 疫学, 公衆衛生 |
+| 保健師国家試験 (public health nurse) | 第96回〜第112回 (2010–2026) | 疫学, 保健統計, 保健医療福祉行政論, 公衆衛生 | See `specification.md` for features and `development_plan.md` for the build phases.
 
 ## Sources and licence
 
