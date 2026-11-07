@@ -2,7 +2,7 @@
 
 An Anki-like web app (PWA) for practising past questions from the Japanese national nurse exam (看護師国家試験) and the national public health nurse exam (保健師国家試験), with spaced repetition.
 
-The questions are limited to **epidemiology and public health**. Other subjects are not included.
+The questions are limited to **epidemiology and public health**. Other subjects are not included. The questions and answers on these topics were extracted, and sorted into categories, using the keywords of the 保健師助産師看護師国家試験出題基準（令和5年版）.
 
 | Exam | Rounds | Categories |
 |---|---|---|
@@ -17,7 +17,7 @@ The questions, choices, answers, figures and tables in `content/` come from the 
 
 > 出典：厚生労働省ホームページ「看護師国家試験・保健師国家試験の問題および正答」（看護師 第99回〜第115回、保健師 第96回〜第112回。各回のURLは下表のとおり）
 >
-> 本リポジトリの作成者（tomishing）が、上記の問題・正答から疫学・公衆衛生関連の問題を抽出し、分類・書式変換等の加工を行って作成したものです。第96・97回保健師国家試験の問題は OCR によりテキスト化し、作成者が確認しました。
+> 本リポジトリの作成者（tomishing）が、上記の問題・正答から、保健師助産師看護師国家試験出題基準（令和5年版）に基づいて疫学・公衆衛生関連の問題を抽出し、分類・書式変換等の加工を行って作成したものです。第96・97回保健師国家試験の問題は OCR によりテキスト化し、作成者が確認しました。
 
 | 実施年 | 看護師 | 保健師 | 出典ページ |
 |---|---|---|---|
