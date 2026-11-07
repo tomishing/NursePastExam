@@ -25,9 +25,9 @@ Version 1 is for one user (the owner), with no accounts and no server-side data.
 
 ## Tech stack
 
-- **React 18 + TypeScript + Vite**
+- **React 19 + TypeScript + Vite**
 - **Tailwind CSS**
-- **React Router v6**
+- **React Router v8** (declarative mode: `BrowserRouter` and `Routes`, imported from `react-router`)
 - **Zustand** for UI and session state
 - **Dexie** (IndexedDB) for progress
 - **ts-fsrs** for scheduling
