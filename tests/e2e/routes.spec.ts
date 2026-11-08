@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-// Smoke test for Phase 1. The review-flow test is added in Phase 7.
+// Smoke test: every page is reachable from the main menu. The review flow is in review.spec.ts.
 test("navigates between all pages", async ({ page }) => {
   await page.goto("/");
   await expect(page.getByRole("heading", { level: 1, name: "ホーム" })).toBeVisible();

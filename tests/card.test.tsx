@@ -59,8 +59,18 @@ describe("CardFront", () => {
     render(<CardFront card={makeCard({ images: ["107AM30.png"] })} selected={[]} />);
     fireEvent.click(screen.getByRole("button", { name: /拡大/ }));
     const dialog = screen.getByRole("dialog", { name: "図の拡大表示" });
+    expect(document.body.style.overflow).toBe("hidden");
+
+    // Opens fitted to the screen; 原寸 switches to full size and back.
+    const toggle = within(dialog).getByRole("button", { name: "原寸" });
+    expect(toggle.getAttribute("aria-pressed")).toBe("false");
+    fireEvent.click(toggle);
+    expect(within(dialog).getByRole("button", { name: "画面に合わせる" }).getAttribute("aria-pressed")).toBe("true");
+    expect(screen.getByRole("dialog")).toBeTruthy(); // the toggle does not close the viewer
+
     fireEvent.click(within(dialog).getByRole("button", { name: "閉じる" }));
     expect(screen.queryByRole("dialog")).toBeNull();
+    expect(document.body.style.overflow).toBe("");
   });
 });
 

@@ -72,8 +72,9 @@ Set these up in Phase 1:
 - `npm run dev`: dev server
 - `npm run import`: rebuild `public/data` and `public/images` from the notes
 - `npm test`: unit tests
-- `npm run test:e2e`: Playwright
-- `npm run build`: static build
+- `npm run test:e2e`: Playwright, run against the production build (`build` + `vite preview` on port 4173) so the service worker is real
+- `npm run build`: static build, including the service worker that precaches the app, `cards.json` and every image
+- `npx pwa-assets-generator`: regenerate the icons in `public/` from `public/favicon.svg` (only when the icon changes)
 
 ## Rules
 

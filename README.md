@@ -7,7 +7,22 @@ The questions are limited to **epidemiology and public health**. Other subjects 
 | Exam | Rounds | Categories |
 |---|---|---|
 | 看護師国家試験 (nurse) | 第99回〜第115回 (2010–2026) | 疫学, 公衆衛生 |
-| 保健師国家試験 (public health nurse) | 第96回〜第112回 (2010–2026) | 疫学, 保健統計, 保健医療福祉行政論, 公衆衛生 | See `specification.md` for features and `development_plan.md` for the build phases.
+| 保健師国家試験 (public health nurse) | 第96回〜第112回 (2010–2026) | 疫学, 保健統計, 保健医療福祉行政論, 公衆衛生 |
+
+See `specification.md` for features and `development_plan.md` for the build phases.
+
+## Running
+
+```sh
+npm install
+npm run import     # build public/data and public/images from content/
+npm run dev        # development server at http://localhost:5173
+npm run build && npx vite preview --host   # the production build, with offline support
+```
+
+Progress is stored only in the browser. Export it regularly from 設定 → バックアップ.
+
+**On a phone.** `npx vite preview --host` prints a network address that a phone on the same Wi-Fi can open. Studying works there, but browsers only enable the service worker (offline use and installing to the home screen) on `https://` or `localhost`. To install the app on a phone, serve the build over HTTPS, for example with `tailscale serve` or another tunnel that provides a certificate. Then use "ホーム画面に追加" in Safari (iOS) or "アプリをインストール" in Chrome (Android).
 
 ## Sources and licence
 
