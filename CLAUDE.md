@@ -51,7 +51,8 @@ NursePastExam/
 │   ├── components/         # CardFront, CardBack, RatingButtons, DeckFilter
 │   ├── pages/              # Home, Review, Browse, Stats, Settings
 │   ├── db/                 # Dexie implementation of the repositories
-│   ├── repositories/       # ProgressRepository and ContentRepository interfaces
+│   ├── lib/                # pure helpers: card labels, grading, filters
+│   ├── repositories/       # ProgressRepository and ContentRepository interfaces, JSON content
 │   ├── scheduler/          # ts-fsrs wrapper and queue building
 │   ├── store/              # Zustand stores
 │   ├── types/              # Card and progress types
