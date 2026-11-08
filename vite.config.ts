@@ -12,5 +12,7 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     include: ["tests/**/*.test.{ts,tsx}"],
+    // The 04:00 rollover is local time; pin the zone so tests behave the same everywhere.
+    env: { TZ: "Asia/Tokyo" },
   },
 });

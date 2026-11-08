@@ -125,7 +125,11 @@ type Progress = {
 };
 
 // reviewLog: UUID primary key, indexed on cardId and reviewedAt. Append-only;
-// undo adds an entry that marks the earlier one as undone.
+// undo adds an entry that marks the earlier one as undone. The undo entry sets
+// undoneId, copies the undone rating, and stores in `previous` the progress it
+// replaced. Undo restores the undone entry's `previous`, or deletes the progress
+// record when that is null (the card was new). Only ratings from the current
+// study day can be undone.
 type ReviewLog = {
   id: string;             // UUID, so devices can merge logs later
   undoneId?: string;      // set on an undo entry
@@ -134,10 +138,11 @@ type ReviewLog = {
   selected?: number[];    // choices tapped before revealing
   correct?: boolean;      // absent if not graded
   reviewedAt: string;     // ISO 8601
-  previous: object;       // state before the rating, used for undo
+  previous: Progress | null; // progress before the rating (null if never seen), used for undo
 };
 
-// settings: key-value store
+// settings: key-value store: newPerDay (20), reviewsPerDay (200), desiredRetention (0.9),
+// newCardOrder ("random" | "oldest" | "newest"), includeNoAnswer (false), lastExportAt
 ```
 
 Export format: `{ schemaVersion, exportedAt, progress, reviewLog, settings }`. Reject a file with an unknown `schemaVersion`. The same format will be used to upload local progress when accounts arrive.
