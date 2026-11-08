@@ -29,7 +29,7 @@ Normalise the session to `AM` or `PM`. Check the actual values when writing the 
 - Split `Choices` and `Image` on `<br>`.
 - Remove the leading `1. ` from each choice and check that the numbers run in order.
 - `（計算問題）` in `Choices` means a calculation question with no choices.
-- `図の選択肢` or an empty `Choices` means the choices are inside the image (e.g. 看護師 第100回 午後1, 第103回 午前18; 保健師 第108回 午後7). The answer is a bare number such as `3`. Store `choices` as empty and `figureChoiceCount` as the highest choice number shown in the image (set by hand in a small override table), so the card can show numbered buttons.
+- `図の選択肢` or an empty `Choices` means the choices are inside the image (e.g. 看護師 第100回 午後1, 第103回 午前18; 保健師 第108回 午後7). The answer is a bare number such as `3`. Store `choices` as empty and `figureChoiceCount` as the highest choice number shown in the image (set by hand in `scripts/lib/overrides.ts`), so the card can show numbered buttons. The import fails if a figure-choice row has no override, or if an override names a row whose `Choices` is not a figure-choice cell.
 - Treat `<` and `>` in the text as literal characters. `<br>` is the only markup.
 - Strip the count from the heading to get the category, and strip the note in brackets for the display name if needed: `公衆衛生（公衆衛生看護学概論 大項目1〜3） (59問)` → `公衆衛生`.
 

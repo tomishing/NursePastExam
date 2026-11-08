@@ -42,7 +42,8 @@ No backend, database or Docker in version 1. The output is a static site, and it
 NursePastExam/
 ├── content/                # source notes and images (read-only input)
 ├── scripts/
-│   └── import-notes.ts     # notes + images -> public/data, public/images
+│   ├── import-notes.ts     # notes + images -> public/data, public/images (file access only)
+│   └── lib/                # pure parsing (table, card, sources, build) and overrides.ts
 ├── public/
 │   ├── data/cards.json     # generated
 │   └── images/             # generated
