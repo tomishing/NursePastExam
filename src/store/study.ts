@@ -2,6 +2,7 @@
 // All progress access goes through progressRepository and ReviewService.
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
+import { createBackup, type BackupFile } from "../lib/backup.ts";
 import { ALL_CARDS, type CardFilter } from "../lib/filter.ts";
 import { progressRepository } from "../repositories/index.ts";
 import { dayStart } from "../scheduler/day.ts";
@@ -28,6 +29,13 @@ type StudyState = {
   rate: (card: Card, rating: Rating, answer: { selected?: number[]; correct?: boolean }) => Promise<void>;
   undo: () => Promise<string | undefined>;
   setSuspended: (card: Card, suspended: boolean) => Promise<void>;
+  saveSettings: (changes: Partial<Settings>) => Promise<void>;
+  /** Every review log entry, for Stats. */
+  loadAllLogs: () => Promise<ReviewLog[]>;
+  /** Builds the backup file and records the export time. */
+  exportBackup: () => Promise<BackupFile>;
+  /** Replaces all progress with the backup's contents. */
+  importBackup: (backup: BackupFile) => Promise<void>;
 };
 
 export const useStudyStore = create<StudyState>()(
@@ -70,6 +78,22 @@ export const useStudyStore = create<StudyState>()(
       },
       setSuspended: async (card, suspended) => {
         await reviewService.setSuspended(card, suspended);
+        await get().refresh();
+      },
+      saveSettings: async (changes) => {
+        await progressRepository.saveSettings(changes);
+        await get().refresh();
+      },
+      loadAllLogs: () => progressRepository.getReviewLogs(),
+      exportBackup: async () => {
+        const now = new Date();
+        const [progress, reviewLog] = await Promise.all([progressRepository.getAllProgress(), progressRepository.getReviewLogs()]);
+        const settings = await progressRepository.saveSettings({ lastExportAt: now.toISOString() });
+        await get().refresh();
+        return createBackup({ progress, reviewLog, settings }, now);
+      },
+      importBackup: async (backup) => {
+        await progressRepository.replaceAll(backup);
         await get().refresh();
       },
     }),

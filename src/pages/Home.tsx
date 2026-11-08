@@ -2,6 +2,7 @@ import { useEffect, useMemo } from "react";
 import { Link } from "react-router";
 import DeckFilter from "../components/DeckFilter.tsx";
 import LoadStatus from "../components/LoadStatus.tsx";
+import { BACKUP_REMINDER_DAYS, needsBackupReminder } from "../lib/backup.ts";
 import { filterCards } from "../lib/filter.ts";
 import { buildQueue, queueCounts } from "../scheduler/queue.ts";
 import { useContentStore } from "../store/content.ts";
@@ -28,6 +29,16 @@ export default function Home() {
     <section>
       <h1 className="text-xl font-bold">ホーム</h1>
       <LoadStatus content={content.status} study={status} error={content.error ?? error} />
+
+      {data && needsBackupReminder(data.settings.lastExportAt, data.progress.size > 0, new Date()) && (
+        <p role="note" className="mt-4 rounded-lg bg-amber-50 p-3 text-sm text-amber-900">
+          {data.settings.lastExportAt ? `最後のバックアップから${BACKUP_REMINDER_DAYS}日以上たちました。` : "まだバックアップしていません。"}
+          学習の記録はこの端末にだけ保存されています。
+          <Link to="/settings" className="ml-1 font-bold underline">
+            設定で書き出す
+          </Link>
+        </p>
+      )}
 
       {counts && queue && (
         <>

@@ -23,4 +23,7 @@ export interface ProgressRepository {
 
   getSettings(): Promise<Settings>;
   saveSettings(changes: Partial<Settings>): Promise<Settings>;
+
+  /** Replaces all progress, the review log and settings in one transaction (backup import). */
+  replaceAll(data: { progress: Progress[]; reviewLog: ReviewLog[]; settings: Settings }): Promise<void>;
 }
