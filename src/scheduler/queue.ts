@@ -4,13 +4,18 @@ import type { Card } from "../types/card.ts";
 import type { Progress, ReviewLog, Settings } from "../types/progress.ts";
 import { dayKey, dayStart, nextDayStart } from "./day.ts";
 
-/** Learning cards due within this window are shown now rather than ending the session early. */
+/**
+ * Learning cards due within this window are shown once nothing else is left, rather than
+ * ending the session early. Cards already due come first, so a card rated もう一度 does not
+ * return immediately while other cards are waiting.
+ */
 export const LEARN_AHEAD_MINUTES = 20;
 
 export type Queue = {
-  learning: Card[];
+  learning: Card[]; // learning and relearning cards already due
   review: Card[];
   new: Card[];
+  learnAhead: Card[]; // learning cards due within LEARN_AHEAD_MINUTES
   /** Learning cards due later today, after the learn-ahead window. */
   laterToday: number;
 };
@@ -72,6 +77,7 @@ export function buildQueue(
   const learnUntil = now.getTime() + LEARN_AHEAD_MINUTES * 60_000;
   const dayEnd = nextDayStart(now).getTime();
   const learning: { card: Card; due: number }[] = [];
+  const ahead: { card: Card; due: number }[] = [];
   const review: { card: Card; due: number }[] = [];
   const fresh: Card[] = [];
   let laterToday = 0;
@@ -87,7 +93,8 @@ export function buildQueue(
     }
     const due = new Date(record!.fsrs.due).getTime();
     if (state === 1 || state === 3) {
-      if (due <= learnUntil) learning.push({ card, due });
+      if (due <= now.getTime()) learning.push({ card, due });
+      else if (due <= learnUntil) ahead.push({ card, due });
       else if (due < dayEnd) laterToday++;
     } else if (due < dayEnd) {
       review.push({ card, due });
@@ -103,11 +110,17 @@ export function buildQueue(
     learning: learning.sort(byDue).map((x) => x.card),
     review: review.sort(byDue).slice(0, reviewRoom).map((x) => x.card),
     new: orderNew(fresh, settings.newCardOrder, now).slice(0, newRoom),
+    learnAhead: ahead.sort(byDue).map((x) => x.card),
     laterToday,
   };
 }
 
 /** The next card to show, in queue order. */
 export function nextCard(queue: Queue): Card | undefined {
-  return queue.learning[0] ?? queue.review[0] ?? queue.new[0];
+  return queue.learning[0] ?? queue.review[0] ?? queue.new[0] ?? queue.learnAhead[0];
+}
+
+/** Cards left in the queue, for the counts on Home and during review. */
+export function queueCounts(queue: Queue): { learning: number; review: number; new: number } {
+  return { learning: queue.learning.length + queue.learnAhead.length, review: queue.review.length, new: queue.new.length };
 }

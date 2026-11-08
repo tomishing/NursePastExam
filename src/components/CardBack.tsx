@@ -5,10 +5,11 @@ import CardFront from "./CardFront.tsx";
 type Props = {
   card: Card;
   selected: number[]; // choices tapped before revealing
+  showResult?: boolean; // Review shows the result beside the rating buttons instead
 };
 
-export default function CardBack({ card, selected }: Props) {
-  const result = grade(card, selected);
+export default function CardBack({ card, selected, showResult = true }: Props) {
+  const result = showResult ? grade(card, selected) : undefined;
   const answer = card.answer;
 
   return (

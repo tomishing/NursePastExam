@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildQueue, effectiveRatings, nextCard, todayCounts } from "../../src/scheduler/queue.ts";
+import { buildQueue, effectiveRatings, nextCard, queueCounts, todayCounts } from "../../src/scheduler/queue.ts";
 import { newFsrsState } from "../../src/scheduler/fsrs.ts";
 import type { Card } from "../../src/types/card.ts";
 import { DEFAULT_SETTINGS, type FsrsStateValue, type Progress, type ReviewLog, type Settings } from "../../src/types/progress.ts";
@@ -62,7 +62,20 @@ describe("buildQueue", () => {
     ]);
     const queue = buildQueue(cards, map, [], settings(), NOW);
     expect(ids(queue.review)).toEqual(["b", "a"]);
-    expect(ids(queue.learning)).toEqual(["d", "c"]);
+    expect(ids(queue.learning)).toEqual(["d"]);
+    expect(ids(queue.learnAhead)).toEqual(["c"]);
+  });
+
+  it("shows learning cards that are not yet due only after everything else", () => {
+    const cards = [card("again"), card("rev"), card("new", { q: 1 })];
+    const map = new Map([
+      ["again", progress("again", 3, at("2026-11-08T10:01:00"))],
+      ["rev", progress("rev", 2, at("2026-11-08T09:00:00"))],
+    ]);
+    const queue = buildQueue(cards, map, [], settings(), NOW);
+    expect(nextCard(queue)?.id).toBe("rev");
+    expect(nextCard({ ...queue, review: [], new: [] })?.id).toBe("again");
+    expect(queueCounts(queue)).toEqual({ learning: 1, review: 1, new: 1 });
   });
 
   it("includes reviews due before 04:00 tomorrow, not after", () => {
@@ -82,7 +95,7 @@ describe("buildQueue", () => {
       ["later", progress("later", 1, at("2026-11-08T11:00:00"))],
     ]);
     const queue = buildQueue(cards, map, [], settings(), NOW);
-    expect(ids(queue.learning)).toEqual(["soon"]);
+    expect(ids(queue.learnAhead)).toEqual(["soon"]);
     expect(queue.laterToday).toBe(1);
   });
 
