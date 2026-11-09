@@ -71,6 +71,8 @@ Under PDL1.0, content in which a third party holds copyright or other rights is 
 
 The explanations (`Explanation` column) were written with Claude (Anthropic). They are **not official** and have not been fully reviewed. Statistics are as of each exam year, and laws may have changed since. They are not covered by the MHLW terms or PDL1.0.
 
+The explanations are licensed under [Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/). When reusing them, credit "NursePastExam (tomishing)", link to this repository and say whether you changed them. If you reuse the questions together with the explanations, the MHLW attribution above also applies to the questions.
+
 ### Code
 
-No licence has been chosen for the code yet. Any future code licence will not apply to `content/`, which stays under the terms above.
+The source code is licensed under the [MIT License](LICENSE). The MIT License does not apply to `content/` or to the files generated from it (`public/data/`, `public/images/`), which stay under the terms above.
