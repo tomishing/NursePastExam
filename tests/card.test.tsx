@@ -7,14 +7,16 @@ import { makeCard } from "./helpers/cards.ts";
 
 afterEach(cleanup);
 
-const choiceButtons = () => screen.queryAllByRole("button").filter((b) => /^\d+\./.test(b.textContent ?? ""));
+// Choices are named "1. 検診" (aria-label), which is what a screen reader announces.
+const choiceButtons = () => screen.queryAllByRole("button").filter((b) => /^\d+\./.test(b.getAttribute("aria-label") ?? ""));
+const name = (b: HTMLElement | undefined) => b?.getAttribute("aria-label") ?? "";
 
 describe("CardFront", () => {
   it("shows the label, question and numbered choices but not the answer", () => {
     render(<CardFront card={makeCard({ session: "PM", q: 38 })} selected={[]} onSelect={() => {}} />);
-    expect(screen.getByText("保健師 第98回 午後 問38")).toBeTruthy();
+    expect(screen.getByRole("article", { name: "保健師 第98回 午後 問38" }).textContent).toContain("第98回 午後 問38");
     expect(screen.getByText("正しいのはどれか。")).toBeTruthy();
-    expect(choiceButtons().map((b) => b.textContent)).toEqual(["1.検診", "2.予防接種", "3.治療", "4.リハビリ"]);
+    expect(choiceButtons().map(name)).toEqual(["1. 検診", "2. 予防接種", "3. 治療", "4. リハビリ"]);
     expect(screen.queryByText("2：予防接種")).toBeNull();
     expect(screen.queryByText("正解")).toBeNull();
   });
@@ -43,7 +45,7 @@ describe("CardFront", () => {
 
   it("shows numbered buttons when the choices are in the figure", () => {
     render(<CardFront card={makeCard({ choices: [], figureChoiceCount: 4, images: ["100PM01.png"] })} selected={[]} />);
-    expect(choiceButtons().map((b) => b.textContent)).toEqual(["1.", "2.", "3.", "4."]);
+    expect(choiceButtons().map(name)).toEqual(["1.", "2.", "3.", "4."]);
   });
 
   it("shows every image in order and the missing-figure notice", () => {
@@ -80,7 +82,7 @@ describe("CardBack", () => {
     expect(screen.getByText("2：予防接種")).toBeTruthy();
     expect(screen.getByText("発症前の予防。")).toBeTruthy();
     expect(screen.getByText(NOTICE)).toBeTruthy();
-    expect(choiceButtons()[1]?.textContent).toContain("正解");
+    expect(name(choiceButtons()[1])).toContain("正解");
     expect(screen.queryByText(/あなたの解答/)).toBeNull();
   });
 
@@ -96,13 +98,13 @@ describe("CardBack", () => {
     const card = makeCard({ answerText: "3 または 4", answer: { type: "choice", accepted: [[3], [4]] } });
     render(<CardBack card={card} selected={[]} />);
     expect(screen.getByText("いずれも正解")).toBeTruthy();
-    expect(choiceButtons().filter((b) => b.textContent?.includes("正解")).map((b) => b.textContent?.[0])).toEqual(["3", "4"]);
+    expect(choiceButtons().filter((b) => name(b).includes("正解")).map((b) => name(b)[0])).toEqual(["3", "4"]);
   });
 
   it("highlights both choices for select-two questions", () => {
     const card = makeCard({ answerText: "1・4：検診、リハビリ", answer: { type: "choice", accepted: [[1, 4]] } });
     render(<CardBack card={card} selected={[1, 4]} />);
-    expect(choiceButtons().filter((b) => b.textContent?.includes("正解")).map((b) => b.textContent?.[0])).toEqual(["1", "4"]);
+    expect(choiceButtons().filter((b) => name(b).includes("正解")).map((b) => name(b)[0])).toEqual(["1", "4"]);
     expect(screen.queryByText("いずれも正解")).toBeNull();
     expect(screen.getByText("あなたの解答：正解")).toBeTruthy();
   });

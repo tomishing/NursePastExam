@@ -23,10 +23,10 @@ export default function UpdatePrompt() {
 
   return (
     <div className="fixed inset-x-0 top-0 z-40 px-4 pt-[calc(env(safe-area-inset-top)+0.5rem)]">
-    <div role="status" className="mx-auto flex w-full max-w-3xl items-center gap-2 rounded-lg bg-slate-800 p-2 pl-3 text-sm text-white shadow-lg">
+    <div role="status" className="mx-auto flex w-full max-w-3xl items-center gap-2 rounded-2xl bg-ink p-2 pl-4 text-sm text-surface shadow-lg">
       <p className="flex-1">{needRefresh ? "新しいバージョンがあります。" : "オフラインでも学習できるようになりました。"}</p>
       {needRefresh && (
-        <button type="button" onClick={() => void updateServiceWorker(true)} className="min-h-11 rounded-lg bg-teal-500 px-4 font-bold text-slate-900">
+        <button type="button" onClick={() => void updateServiceWorker(true)} className="btn bg-warn text-on-warn">
           更新
         </button>
       )}
@@ -36,7 +36,7 @@ export default function UpdatePrompt() {
           setNeedRefresh(false);
           setOfflineReady(false);
         }}
-        className="min-h-11 rounded-lg px-3 text-slate-200"
+        className="btn px-3 font-medium text-line-strong"
       >
         閉じる
       </button>

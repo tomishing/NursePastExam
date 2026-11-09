@@ -6,7 +6,7 @@ export const NOTICE =
 export const FIGURE_MISSING_TEXT = "図は原本を参照してください";
 
 export const DECK_LABELS: Record<Deck, string> = { nurse: "看護師", ph: "保健師" };
-const SESSION_LABELS: Record<Session, string> = { AM: "午前", PM: "午後" };
+export const SESSION_LABELS: Record<Session, string> = { AM: "午前", PM: "午後" };
 
 /** e.g. "保健師 第98回 午後 問38" */
 export function cardLabel(card: Card): string {

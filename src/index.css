@@ -1,16 +1,167 @@
 @import "tailwindcss";
 
-@theme {
+/*
+ * Design tokens. Components use these semantic names (bg-surface, text-ink-2, ...) instead of
+ * raw palette colors, so the whole palette is defined in one place.
+ */
+:root {
+  color-scheme: light;
+  /*
+   * Palette: cream and sage. Sage is used only for backgrounds, chips and panels; buttons use
+   * warm charcoal, honey, terracotta, dusty blue or plum so nothing tappable looks green.
+   */
+  --canvas: #f6f2e9;
+  --surface: #fffdf8;
+  --surface-muted: #eee8db;
+  --line: #e4ddcd;
+  --line-strong: #cdc3ae;
+  --ink: #2e2a25;
+  --ink-2: #4f4942;
+  --ink-3: #655d53;
+  /* brand = filled buttons and progress (charcoal); brand-soft / brand-ink = the sage accent. */
+  --brand: #3a352f;
+  --brand-strong: #2e2a25;
+  --brand-soft: #e6ebdc;
+  --brand-ink: #4a5a3c;
+  --on-brand: #fffdf8;
+  /* Meanings: good = correct / review, bad = wrong / again, warn = notices / hard, info = new / easy. */
+  --good: #4a6a8a;
+  --good-soft: #e4ebf2;
+  --good-line: #bccddd;
+  --good-ink: #33506d;
+  --on-good: #ffffff;
+  --bad: #b55a3c;
+  --bad-soft: #f7e3da;
+  --bad-line: #e9bfac;
+  --bad-ink: #93402a;
+  --on-bad: #ffffff;
+  --warn: #e2b15a;
+  --warn-soft: #f9eed6;
+  --warn-line: #e8cd93;
+  --warn-ink: #74500f;
+  --on-warn: #2e2a25;
+  --info: #7a6890;
+  --info-soft: #eee8f2;
+  --info-line: #d3c7de;
+  --info-ink: #57476b;
+  --shadow-card: 0 1px 2px rgb(46 42 37 / 0.06);
+  --icon-fill-active: #f3dfae;
+  --icon-cheek: #eea08b;
+  --nav-height: 4rem;
+}
+
+@theme inline {
   --font-sans: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic UI",
     "Yu Gothic", Meiryo, system-ui, sans-serif;
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-brand: var(--brand);
+  --color-brand-strong: var(--brand-strong);
+  --color-brand-soft: var(--brand-soft);
+  --color-brand-ink: var(--brand-ink);
+  --color-on-brand: var(--on-brand);
+  --color-good: var(--good);
+  --color-good-soft: var(--good-soft);
+  --color-good-line: var(--good-line);
+  --color-good-ink: var(--good-ink);
+  --color-on-good: var(--on-good);
+  --color-bad: var(--bad);
+  --color-bad-soft: var(--bad-soft);
+  --color-bad-line: var(--bad-line);
+  --color-bad-ink: var(--bad-ink);
+  --color-on-bad: var(--on-bad);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --color-warn-line: var(--warn-line);
+  --color-warn-ink: var(--warn-ink);
+  --color-on-warn: var(--on-warn);
+  --color-info: var(--info);
+  --color-info-soft: var(--info-soft);
+  --color-info-line: var(--info-line);
+  --color-info-ink: var(--info-ink);
 }
 
 html {
   /* At least 16px on phones (specification.md section 7). */
   font-size: 16px;
   -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
-  @apply bg-slate-50 text-slate-900 font-sans antialiased;
+  @apply bg-canvas text-ink font-sans antialiased;
+  /* Long Latin runs in exam text (e.g. <Non-CommunicableDiseases:NCDs>) must wrap on phones. */
+  overflow-wrap: break-word;
+}
+
+:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
+
+/* Proportional kana spacing for headings and labels, as in most Japanese UIs. */
+h1,
+h2,
+h3,
+.palt {
+  font-feature-settings: "palt";
+}
+
+/* ---- Shared component classes ---- */
+
+@utility card {
+  background-color: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 0.875rem;
+  box-shadow: var(--shadow-card);
+}
+
+@utility btn {
+  @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-xl px-4 font-bold transition-colors select-none;
+  @apply disabled:pointer-events-none disabled:opacity-40;
+}
+
+@utility btn-primary {
+  @apply bg-brand-strong text-on-brand hover:brightness-110;
+}
+
+@utility btn-secondary {
+  @apply border border-line-strong bg-surface text-ink hover:bg-surface-muted;
+}
+
+@utility btn-ghost {
+  @apply text-ink-2 hover:bg-surface-muted;
+}
+
+@utility field {
+  @apply min-h-11 w-full rounded-xl border border-line-strong bg-surface px-3 text-ink;
+  @apply focus:border-brand focus:outline-none focus:ring-3 focus:ring-brand/20;
+}
+
+@utility field-label {
+  @apply mb-1 block text-sm font-medium text-ink-2;
+}
+
+@utility eyebrow {
+  @apply text-sm font-medium text-ink-3;
+}
+
+/* A small hop when a tab becomes active. */
+@keyframes hop {
+  0% { transform: translateY(0) scale(1); }
+  40% { transform: translateY(-3px) scale(1.08); }
+  100% { transform: translateY(0) scale(1); }
+}
+
+@utility animate-hop {
+  animation: hop 0.35s ease-out;
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
 }

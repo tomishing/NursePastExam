@@ -6,9 +6,9 @@ export default defineConfig({
   headLinkOptions: { preset: "2023" },
   preset: {
     ...minimal2023Preset,
-    // The icon already has a full-bleed background, so keep padding small and use the same teal.
-    maskable: { ...minimal2023Preset.maskable, padding: 0.1, resizeOptions: { background: "#0f766e" } },
-    apple: { ...minimal2023Preset.apple, padding: 0.1, resizeOptions: { background: "#0f766e" } },
+    // The icon already has a full-bleed background, so keep padding small and use the same sage.
+    maskable: { ...minimal2023Preset.maskable, padding: 0.1, resizeOptions: { background: "#8a9b78" } },
+    apple: { ...minimal2023Preset.apple, padding: 0.1, resizeOptions: { background: "#8a9b78" } },
   },
   images: ["public/favicon.svg"],
 });

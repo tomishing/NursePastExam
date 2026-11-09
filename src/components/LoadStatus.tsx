@@ -8,14 +8,24 @@ type Props = {
 export default function LoadStatus({ content, study, error }: Props) {
   if (content === "missing") {
     return (
-      <p className="mt-4 rounded-lg bg-amber-50 p-3 text-amber-900">
+      <p className="mt-4 rounded-2xl bg-warn-soft p-4 text-warn-ink">
         問題データがありません。<code>npm run import</code> を実行してください。
       </p>
     );
   }
   if (content === "error" || study === "error") {
-    return <p className="mt-4 rounded-lg bg-rose-50 p-3 text-rose-900">読み込みに失敗しました：{error}</p>;
+    return (
+      <p className="mt-4 rounded-2xl bg-bad-soft p-4 text-bad-ink">読み込みに失敗しました：{error}</p>
+    );
   }
-  if (content !== "ready" || study !== "ready") return <p className="mt-4 text-slate-600">読み込み中…</p>;
+  if (content !== "ready" || study !== "ready") {
+    return (
+      <div className="mt-4 space-y-3" aria-busy="true">
+        <p className="sr-only">読み込み中…</p>
+        <div className="h-28 animate-pulse rounded-2xl bg-surface-muted" />
+        <div className="h-12 animate-pulse rounded-2xl bg-surface-muted" />
+      </div>
+    );
+  }
   return null;
 }

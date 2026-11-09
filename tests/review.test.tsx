@@ -110,7 +110,7 @@ describe("Review", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "元に戻す" }));
     await waitFor(() => expect(screen.getByText("問題その1")).toBeTruthy());
-    expect(screen.getByText("直前の評価を取り消しました。")).toBeTruthy();
+    expect(await screen.findByText("直前の評価を取り消しました。")).toBeTruthy();
     expect(screen.getByRole("button", { name: "答えを見る" })).toBeTruthy();
     expect(await progressRepository.getProgress("ph-98-AM-1")).toBeUndefined();
     expect(await progressRepository.getReviewLogs()).toHaveLength(2);

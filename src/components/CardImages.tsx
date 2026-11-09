@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { imageUrl } from "../lib/card.ts";
+import Icon from "./Icon.tsx";
 
 type Props = { images: string[]; label: string };
 
@@ -40,9 +41,10 @@ export default function CardImages({ images, label }: Props) {
           key={name}
           type="button"
           onClick={() => view(name)}
-          className="block w-full overflow-hidden rounded-lg border border-slate-200 bg-white p-1"
+          className="relative block w-full overflow-hidden rounded-xl border border-line bg-white p-1"
           aria-label={`${label} 図${images.length > 1 ? i + 1 : ""}を拡大`}
         >
+          {/* Figures keep a white background in dark mode: they are scans of printed pages. */}
           <img
             src={imageUrl(name)}
             alt={`${label} 図${images.length > 1 ? i + 1 : ""}`}
@@ -50,6 +52,9 @@ export default function CardImages({ images, label }: Props) {
             decoding="async"
             className="mx-auto max-w-full"
           />
+          <span className="absolute right-2 bottom-2 flex size-8 items-center justify-center rounded-full bg-ink/70 text-white">
+            <Icon name="zoom" className="size-4" />
+          </span>
         </button>
       ))}
 
@@ -66,14 +71,14 @@ export default function CardImages({ images, label }: Props) {
               type="button"
               onClick={() => setActualSize((a) => !a)}
               aria-pressed={actualSize}
-              className="min-h-11 min-w-11 rounded-lg bg-white/20 px-4 text-white"
+              className="min-h-11 min-w-11 rounded-full bg-white/15 px-4 font-semibold text-white backdrop-blur"
             >
               {actualSize ? "画面に合わせる" : "原寸"}
             </button>
             <button
               type="button"
               onClick={() => setOpen(null)}
-              className="min-h-11 min-w-11 rounded-lg bg-white/90 px-4 text-slate-900"
+              className="min-h-11 min-w-11 rounded-full bg-white px-4 font-semibold text-ink"
               autoFocus
             >
               閉じる

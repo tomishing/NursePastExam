@@ -8,33 +8,32 @@ type Props = {
   onChange: (filter: CardFilter) => void;
 };
 
-const selectClass = "min-h-11 w-full rounded-lg border border-slate-300 bg-white px-2";
-
 export default function DeckFilter({ cards, value, onChange }: Props) {
   const { categories, years } = filterOptions(cards, value.deck);
   const toNumber = (v: string) => (v === "" ? null : Number(v));
+  const decks = ["all", ...(Object.keys(DECK_LABELS) as Deck[])] as const;
 
   return (
-    <fieldset className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+    <fieldset className="space-y-3">
       <legend className="sr-only">絞り込み</legend>
-      <label className="text-sm text-slate-600">
-        試験
+      <label className="block">
+        <span className="field-label">試験</span>
+        {/* A native select keeps the accessible name and works everywhere; it is styled as a field. */}
         <select
-          className={selectClass}
+          className="field"
           value={value.deck}
           onChange={(e) => onChange({ ...value, deck: e.target.value as Deck | "all", category: "all" })}
         >
-          <option value="all">すべて</option>
-          {(Object.keys(DECK_LABELS) as Deck[]).map((deck) => (
+          {decks.map((deck) => (
             <option key={deck} value={deck}>
-              {DECK_LABELS[deck]}
+              {deck === "all" ? "すべて" : DECK_LABELS[deck]}
             </option>
           ))}
         </select>
       </label>
-      <label className="text-sm text-slate-600">
-        分野
-        <select className={selectClass} value={value.category} onChange={(e) => onChange({ ...value, category: e.target.value })}>
+      <label className="block">
+        <span className="field-label">分野</span>
+        <select className="field" value={value.category} onChange={(e) => onChange({ ...value, category: e.target.value })}>
           <option value="all">すべて</option>
           {categories.map((category) => (
             <option key={category} value={category}>
@@ -43,36 +42,30 @@ export default function DeckFilter({ cards, value, onChange }: Props) {
           ))}
         </select>
       </label>
-      <label className="text-sm text-slate-600">
-        年（から）
-        <select
-          className={selectClass}
-          value={value.yearFrom ?? ""}
-          onChange={(e) => onChange({ ...value, yearFrom: toNumber(e.target.value) })}
-        >
-          <option value="">指定なし</option>
-          {years.map((year) => (
-            <option key={year} value={year}>
-              {year}
-            </option>
-          ))}
-        </select>
-      </label>
-      <label className="text-sm text-slate-600">
-        年（まで）
-        <select
-          className={selectClass}
-          value={value.yearTo ?? ""}
-          onChange={(e) => onChange({ ...value, yearTo: toNumber(e.target.value) })}
-        >
-          <option value="">指定なし</option>
-          {years.map((year) => (
-            <option key={year} value={year}>
-              {year}
-            </option>
-          ))}
-        </select>
-      </label>
+      <div className="grid grid-cols-2 gap-3">
+        <label className="block">
+          <span className="field-label">年（から）</span>
+          <select className="field" value={value.yearFrom ?? ""} onChange={(e) => onChange({ ...value, yearFrom: toNumber(e.target.value) })}>
+            <option value="">指定なし</option>
+            {years.map((year) => (
+              <option key={year} value={year}>
+                {year}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className="block">
+          <span className="field-label">年（まで）</span>
+          <select className="field" value={value.yearTo ?? ""} onChange={(e) => onChange({ ...value, yearTo: toNumber(e.target.value) })}>
+            <option value="">指定なし</option>
+            {years.map((year) => (
+              <option key={year} value={year}>
+                {year}
+              </option>
+            ))}
+          </select>
+        </label>
+      </div>
     </fieldset>
   );
 }
