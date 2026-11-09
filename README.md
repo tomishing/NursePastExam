@@ -9,6 +9,13 @@ The questions are limited to **epidemiology and public health**. Other subjects 
 | 看護師国家試験 (nurse) | 第99回〜第115回 (2010–2026) | 疫学, 公衆衛生 |
 | 保健師国家試験 (public health nurse) | 第96回〜第112回 (2010–2026) | 疫学, 保健統計, 保健医療福祉行政論, 公衆衛生 |
 
+## Screenshots
+
+| Home | Question | Answer and rating | Question list |
+|:---:|:---:|:---:|:---:|
+| <img src="docs/screenshots/home.png" alt="ホーム画面：今日の目標と学習を始めるボタン" width="200"> | <img src="docs/screenshots/question.png" alt="問題画面：問題文と選択肢" width="200"> | <img src="docs/screenshots/answer.png" alt="解答画面：正解と4段階の評価ボタン" width="200"> | <img src="docs/screenshots/browse.png" alt="一覧画面：キーワード検索と問題の一覧" width="200"> |
+| Today's goal and a study button | Pick an answer, then show it | See the answer, then rate your recall | Search and filter every question |
+
 See `specification.md` for features and `development_plan.md` for the build phases.
 
 ## Running
